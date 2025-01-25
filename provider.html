@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Service Provider Confirmation</title>
+    <style>
+        :root {
+            --primary-color: #4A6CF7;
+            --secondary-color: #6B7AFF;
+            --background-color: #F4F7FF;
+            --text-color: #2C3E50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .provider-info {
+            margin-bottom: 20px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-accept {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-reject {
+            background-color: #FF6B6B;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Service Provider Assigned</h2>
+        <div id="providerInfo" class="provider-info">
+            <!-- Provider details will be dynamically inserted here -->
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-accept" onclick="acceptProvider()">Accept Provider</button>
+            <button class="btn btn-reject" onclick="rejectProvider()">Request Different Provider</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to generate a random name
+        function generateName(gender) {
+            const maleNames = ['John', 'Michael', 'David', 'James', 'Robert', 'William', 'Joseph', 'Thomas'];
+            const femaleNames = ['Emma', 'Olivia', 'Sophia', 'Isabella', 'Ava', 'Mia', 'Charlotte', 'Amelia'];
+            
+            return gender === 'Male' ? 
+                maleNames[Math.floor(Math.random() * maleNames.length)] : 
+                femaleNames[Math.floor(Math.random() * femaleNames.length)];
+        }
+
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1]);
+        }
+
+        // Generate and display provider information
+        function generateProviderInfo() {
+            // Get service type from URL
+            const serviceType = getUrlParameter('serviceType');
+            
+            // Randomly select gender based on user's preferred provider gender
+            const preferredGender = getUrlParameter('providerGender');
+            const gender = preferredGender === 'No Preference' ? 
+                (Math.random() > 0.5 ? 'Male' : 'Female') : 
+                preferredGender;
+
+            // Generate provider details
+            const providerName = generateName(gender);
+            const providerAge = Math.floor(Math.random() * 30) + 25; // Age between 25-55
+            const serviceDuration = getUrlParameter('serviceDuration');
+
+            // Create provider info HTML
+            const providerInfoHTML = `
+                <p><strong>Name:</strong> ${providerName}</p>
+                <p><strong>Gender:</strong> ${gender}</p>
+                <p><strong>Age:</strong> ${providerAge}</p>
+                <p><strong>Service Type:</strong> ${serviceType}</p>
+                <p><strong>Service Duration:</strong> ${serviceDuration} minutes</p>
+            `;
+
+            document.getElementById('providerInfo').innerHTML = providerInfoHTML;
+        }
+
+        // Accept provider function (placeholder)
+        function acceptProvider() {
+            alert('Provider accepted. Booking confirmed!');
+            // Here you would typically send the confirmation to a backend
+        }
+
+        // Reject provider function (placeholder)
+        function rejectProvider() {
+            alert('Requesting a different provider...');
+            // Here you would typically request a new random provider
+        }
+
+        // Generate provider info when page loads
+        window.onload = generateProviderInfo;
+    </script>
+</body>
+</html>
