@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Community Care - Signup</title>
+    <style>
+        :root {
+            --primary-color: #4A6CF7;
+            --secondary-color: #6B7AFF;
+            --background-color: #F4F7FF;
+            --text-color: #2C3E50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 400px;
+            padding: 30px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h2>Community Care sigup</h2>
+        </div>
+        <form class="login-form">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" required>
+            </div>
+          <button type="submit" class="login-btn">Signup</button>
+        </form>
+    </div>
+</body>
+<script type="module">
+    import {auth,createUserWithEmailAndPassword} from '../firebase.js'
+    document.querySelector('.login-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const email = document.querySelector('input[type="email"]').value;
+        const password = document.querySelector('input[type="password"]').value;
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth,email, password);
+            const user = userCredential.user;
+            console.log('Login successful:', user);
+            alert('Login successful!');
+            // Redirect to the dashboard or home page
+            window.location.href="index.html"
+        } catch (error) {
+            console.error('Error signing in:', error);
+            alert('Error: ' + error.message);
+        }
+    });
+</script>
+</html>

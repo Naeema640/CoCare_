@@ -91,11 +91,32 @@
                 <label>Password</label>
                 <input type="password" required>
             </div>
-          <button type="submit" class="login-btn"> <a href="index.html">Login</a></button>
+          <button type="submit" class="login-btn">Login</button>
         </form>
-        <div class="signup-link">
-            Don't have an account? <a href="#">Sign Up</a>
+        <div class="signup-link" >
+            Don't have an account? <a href="signup.html">Sign Up</a>
         </div>
     </div>
 </body>
+<script type="module">
+    import {auth,signInWithEmailAndPassword} from '../firebase.js'
+    document.querySelector('.login-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const email = document.querySelector('input[type="email"]').value;
+        const password = document.querySelector('input[type="password"]').value;
+
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth,email, password);
+            const user = userCredential.user;
+            console.log('Login successful:', user);
+            alert('Login successful!');
+            // Redirect to the dashboard or home page
+            window.location.href="index.html"
+        } catch (error) {
+            console.error('Error signing in:', error);
+            alert('Error: ' + error.message);
+        }
+    });
+</script>
 </html>
