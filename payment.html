@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Options</title>
+    <style>
+        :root {
+            --primary-color: #4A6CF7;
+            --secondary-color: #6B7AFF;
+            --background-color: #F4F7FF;
+            --text-color: #2C3E50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            background-color: #f1f5ff;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .payment-method:hover {
+            background-color: #e6edff;
+        }
+
+        .payment-method.selected {
+            background-color: #4A6CF7;
+            color: white;
+        }
+
+        .payment-method img {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+        }
+
+        .payment-method-details {
+            text-align: left;
+            flex-grow: 1;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn:disabled {
+            background-color: #a0b4f7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Choose Payment Method</h2>
+        <div id="paymentMethods">
+            <div class="payment-method" data-method="upi">
+                <img src="https://via.placeholder.com/40?text=UPI" alt="UPI">
+                <div class="payment-method-details">
+                    <strong>UPI</strong>
+                    <p>Pay directly from your bank account</p>
+                </div>
+            </div>
+            <div class="payment-method" data-method="credit">
+                <img src="https://via.placeholder.com/40?text=CC" alt="Credit Card">
+                <div class="payment-method-details">
+                    <strong>Credit Card</strong>
+                    <p>Pay with credit card</p>
+                </div>
+            </div>
+            <div class="payment-method" data-method="debit">
+                <img src="https://via.placeholder.com/40?text=DC" alt="Debit Card">
+                <div class="payment-method-details">
+                    <strong>Debit Card</strong>
+                    <p>Pay with debit card</p>
+                </div>
+            </div>
+            <div class="payment-method" data-method="cod">
+                <img src="https://via.placeholder.com/40?text=COD" alt="Cash on Delivery">
+                <div class="payment-method-details">
+                    <strong>Cash on Delivery</strong>
+                    <p>Pay when service is completed</p>
+                </div>
+            </div>
+        </div>
+        <button id="proceedBtn" class="btn" disabled>Proceed to Payment</button>
+    </div>
+
+    <script>
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all payment method elements
+            var paymentMethods = document.querySelectorAll('.payment-method');
+            var proceedBtn = document.getElementById('proceedBtn');
+            var selectedMethod = null;
+
+            // Add click event to each payment method
+            paymentMethods.forEach(function(method) {
+                method.addEventListener('click', function() {
+                    // Remove selected class from all methods
+                    paymentMethods.forEach(function(m) {
+                        m.classList.remove('selected');
+                    });
+
+                    // Add selected class to clicked method
+                    this.classList.add('selected');
+
+                    // Store selected method
+                    selectedMethod = this.getAttribute('data-method');
+
+                    // Enable proceed button
+                    proceedBtn.disabled = false;
+                });
+            });
+
+            // Add click event to proceed button
+            proceedBtn.addEventListener('click', function() {
+                if (selectedMethod) {
+                    alert('Proceeding with payment for ' + selectedMethod);
+                    // Add your payment processing logic here
+                }
+            });
+        });
+    </script>
+</body>
+</html>
