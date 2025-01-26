@@ -132,7 +132,34 @@
 </head>
 <body>
     <div class="container">
+        <style>
+            .header {
+                display: flex;
+                align-items: center;
+                gap: 10px; /* Adds space between image and text */
+            }
+        
+            .header img {
+                width: 125px; /* Fixed width */
+                height: 125px; /* Fixed height */
+                object-fit: contain; /* Ensures image maintains aspect ratio */
+                vertical-align: left;
+                margin-left: -150px; /* Aligns image with text vertically */
+            }
+        
+            .logo {
+                font-size: 50px;
+                font-weight: bold;
+                color: var(--primary-color);
+                display: flex;
+                align-items: left;
+                margin-left: -670px;
+                gap: 10px;
+            }
+
+        </style>
         <header class="header">
+            <img src="https://st2.depositphotos.com/1768926/10264/v/450/depositphotos_102644096-stock-illustration-community-care-logo-template.jpg" alt="Co Care">
             <div class="logo">CoCare</div>
             <nav class="navigation">
                 <a href="#">Home</a>
