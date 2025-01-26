@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Service Provider Confirmation</title>
+    <title>Service Provider Selection</title>
     <style>
         :root {
             --primary-color: #4A6CF7;
@@ -74,17 +74,20 @@
 </head>
 <body>
     <div class="container">
-        <h2>Service Provider Assigned</h2>
+        <h2>Service Provider Selection</h2>
         <div id="providerInfo" class="provider-info">
             <!-- Provider details will be dynamically inserted here -->
         </div>
         <div class="btn-group">
-            <button class="btn btn-accept" onclick="acceptProvider()"><a href="payment.html">Accept Provider</a></button>
-            <button class="btn btn-reject" onclick="rejectProvider()"><a href="CoCare_/newprovider.html">Request Different Provider</a></button>
+            <button class="btn btn-accept" onclick="acceptProvider()">Accept Provider</button>
+            <button class="btn btn-reject" onclick="rejectProvider()">Request Different Provider</button>
         </div>
     </div>
 
     <script>
+        const providers = [];
+        let currentProviderIndex = 0;
+
         // Function to generate a random name
         function generateName(gender) {
             const maleNames = ['John', 'Michael', 'David', 'James', 'Robert', 'William', 'Joseph', 'Thomas'];
@@ -103,48 +106,65 @@
             return results === null ? '' : decodeURIComponent(results[1]);
         }
 
-        // Generate and display provider information
-        function generateProviderInfo() {
-            // Get service type from URL
+        // Generate a new provider
+        function generateProvider() {
             const serviceType = getUrlParameter('serviceType');
-            
-            // Randomly select gender based on user's preferred provider gender
             const preferredGender = getUrlParameter('providerGender');
+            const serviceDuration = getUrlParameter('serviceDuration');
+
             const gender = preferredGender === 'No Preference' ? 
                 (Math.random() > 0.5 ? 'Male' : 'Female') : 
                 preferredGender;
 
-            // Generate provider details
-            const providerName = generateName(gender);
-            const providerAge = Math.floor(Math.random() * 30) + 25; // Age between 25-55
-            const serviceDuration = getUrlParameter('serviceDuration');
+            const provider = {
+                name: generateName(gender),
+                gender: gender,
+                age: Math.floor(Math.random() * 30) + 25,
+                serviceType: serviceType,
+                serviceDuration: serviceDuration
+            };
 
-            // Create provider info HTML
+            providers.push(provider);
+            return provider;
+        }
+
+        // Display provider information
+        function displayProviderInfo(provider) {
             const providerInfoHTML = `
-                <p><strong>Name:</strong> ${providerName}</p>
-                <p><strong>Gender:</strong> ${gender}</p>
-                <p><strong>Age:</strong> ${providerAge}</p>
-                <p><strong>Service Type:</strong> ${serviceType}</p>
-                <p><strong>Service Duration:</strong> ${serviceDuration} minutes</p>
+                <p><strong>Name:</strong> ${provider.name}</p>
+                <p><strong>Gender:</strong> ${provider.gender}</p>
+                <p><strong>Age:</strong> ${provider.age}</p>
+                <p><strong>Service Type:</strong> ${provider.serviceType}</p>
+                <p><strong>Service Duration:</strong> ${provider.serviceDuration} minutes</p>
             `;
 
             document.getElementById('providerInfo').innerHTML = providerInfoHTML;
         }
 
-        // Accept provider function (placeholder)
+        // Accept provider function
         function acceptProvider() {
-            alert('Provider accepted. Booking confirmed!');
-            // Here you would typically send the confirmation to a backend
+            const currentProvider = providers[currentProviderIndex];
+            localStorage.setItem('selectedProvider', JSON.stringify(currentProvider));
+            window.location.href = 'payment.html';
         }
 
-        // Reject provider function (placeholder)
+        // Reject provider function
         function rejectProvider() {
-            alert('Requesting a different provider...');
-            // Here you would typically request a new random provider
+            currentProviderIndex++;
+            
+            // If no more providers, generate a new one
+            if (currentProviderIndex >= providers.length) {
+                generateProvider();
+            }
+            
+            displayProviderInfo(providers[currentProviderIndex]);
         }
 
-        // Generate provider info when page loads
-        window.onload = generateProviderInfo;
+        // Initialize page
+        window.onload = function() {
+            generateProvider();
+            displayProviderInfo(providers[0]);
+        };
     </script>
 </body>
 </html>
